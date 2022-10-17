@@ -21,7 +21,7 @@ namespace MeasuringStations
         [ObservableProperty]
         private StationDetails _station;
         [ObservableProperty]
-        private int _id = 291;
+        private string _selectedStationName;
         public ObservableCollection<Station> AllStations { get; }
 
         public MainViewModel()
@@ -30,8 +30,8 @@ namespace MeasuringStations
         }
 
         [ICommand]
-        private async Task GetStationAsync()
-        {
+        private async Task GetStationAsync() 
+        { 
             if (IsBusy)
             {
                 return;
@@ -40,18 +40,27 @@ namespace MeasuringStations
             try
             {
                 IsBusy = true;
-                using var client = new HttpClient();
-                var response = await client.GetAsync("https://api.gios.gov.pl/pjp-api/rest/aqindex/getIndex/" + Id);
-                if (response.StatusCode == HttpStatusCode.OK)
+
+                var selectedStation = AllStations.FirstOrDefault(s => s.StationName == SelectedStationName.Trim());
+                if (selectedStation is null)
                 {
-                    var json = await response.Content.ReadAsStringAsync();
-                    Station = JsonConvert.DeserializeObject<StationDetails>(json);
+                    MessageBox.Show("Couldn't find given station.");
+                    return;
+                }    
+
+                using var client = new HttpClient();
+                var response = await client.GetAsync("https://api.gios.gov.pl/pjp-api/rest/aqindex/getIndex/" + selectedStation.Id);
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    MessageBox.Show("Operation failed.");
                 }
+
+                var json = await response.Content.ReadAsStringAsync();
+                Station = JsonConvert.DeserializeObject<StationDetails>(json);
             }
             catch (Exception)
             {
-
-                throw;
+                MessageBox.Show("Operation failed.");
             }
             finally
             {
@@ -59,7 +68,8 @@ namespace MeasuringStations
             }
         }
 
-        public async Task GetAllStationsAsync()
+        [ICommand]
+        private async Task GetAllStationsAsync()
         {
             if (IsBusy)
             {
