@@ -17,7 +17,7 @@ namespace MeasuringStations
         [ObservableProperty]
         private bool _isBusy;
         [ObservableProperty]
-        private Station _station;
+        private StationDetails _station;
         [ObservableProperty]
         private int _id = 291;
 
@@ -31,13 +31,13 @@ namespace MeasuringStations
 
             try
             {
-                //IsBusy = true;
+                IsBusy = true;
                 using var client = new HttpClient();
                 var response = await client.GetAsync("https://api.gios.gov.pl/pjp-api/rest/aqindex/getIndex/" + Id);
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
                     var json = await response.Content.ReadAsStringAsync();
-                    Station = JsonConvert.DeserializeObject<Station>(json);
+                    Station = JsonConvert.DeserializeObject<StationDetails>(json);
                 }
             }
             catch (Exception)
