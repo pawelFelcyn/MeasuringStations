@@ -17,12 +17,14 @@ namespace MeasuringStations
     public partial class MainViewModel : ObservableObject
     {
         [ObservableProperty]
+        [AlsoNotifyChangeFor(nameof(IsNotBusy))]
         private bool _isBusy;
         [ObservableProperty]
         private StationDetails _station;
         [ObservableProperty]
         private string _selectedStationName;
         public ObservableCollection<Station> AllStations { get; }
+        public bool IsNotBusy => !IsBusy;
 
         public MainViewModel()
         {
@@ -41,7 +43,7 @@ namespace MeasuringStations
             {
                 IsBusy = true;
 
-                var selectedStation = AllStations.FirstOrDefault(s => s.StationName == SelectedStationName.Trim());
+                var selectedStation = AllStations.FirstOrDefault(s => s.StationName == SelectedStationName?.Trim());
                 if (selectedStation is null)
                 {
                     MessageBox.Show("Couldn't find given station.");

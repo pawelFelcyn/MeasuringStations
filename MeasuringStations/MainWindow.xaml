@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="auto" Width="800"
         SizeToContent="Height">
-    <Grid>
+    <Grid IsEnabled="{Binding IsNotBusy}">
       <Grid.RowDefinitions>
         <RowDefinition/>
         <RowDefinition/>
