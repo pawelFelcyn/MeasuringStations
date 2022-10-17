@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace MeasuringStations.Models
 {
 
-    public class Station
+    public class StationDetails
     {
         public int Id { get; set; }
         public DateTime? StCalcDate { get; set; }
