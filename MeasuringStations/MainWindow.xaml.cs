@@ -22,6 +22,9 @@ namespace MeasuringStations
     {
         public MainWindow()
         {
+            var viewModel = new MainViewModel();
+            DataContext = viewModel;
+
             InitializeComponent();
         }
     }

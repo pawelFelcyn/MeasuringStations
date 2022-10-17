@@ -5,8 +5,101 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MeasuringStations"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="auto" Width="800"
+        SizeToContent="Height">
     <Grid>
-
+      <Grid.RowDefinitions>
+        <RowDefinition/>
+        <RowDefinition/>
+      </Grid.RowDefinitions>
+      <StackPanel>
+        <Button Content="Reload stations" Command="{Binding GetAllStationsCommand}" Width="100" Margin="10"/>
+        <ScrollViewer Height="300" MaxHeight="300" MinHeight="300">
+          <ListView ItemsSource="{Binding AllStations, Mode=OneTime}" SelectedItem="{Binding SelectedStation, Mode=OneWayToSource}">
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <ContentControl>
+                  <Label Content="{Binding StationName}"/>
+                </ContentControl>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </ListView>
+        </ScrollViewer>
+      </StackPanel>
+      <StackPanel Grid.Row="1">
+        <WrapPanel>
+          <TextBox Margin="10" Text="{Binding SelectedStationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+          <Button Margin="10" Content="Details" Width="50" Command="{Binding GetStationCommand}"/>
+        </WrapPanel>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+          </Grid.RowDefinitions>
+          <Label Grid.Row="0" Grid.Column="0"  Content="StCalcDate"/>
+          <Label Grid.Row="1" Grid.Column="0"  Content="StIndexLevel"/>
+          <Label Grid.Row="2" Grid.Column="0"  Content="StSourceDataDate"/>
+          <Label Grid.Row="3" Grid.Column="0"  Content="So2CalcDate"/>
+          <Label Grid.Row="4" Grid.Column="0"  Content="So2IndexLevel"/>
+          <Label Grid.Row="5" Grid.Column="0"  Content="So2SourceDataDate"/>
+          <Label Grid.Row="6" Grid.Column="0"  Content="No2CalcDate"/>
+          <Label Grid.Row="7" Grid.Column="0"  Content="No2IndexLevel"/>
+          <Label Grid.Row="8" Grid.Column="0"  Content="No2SourceDataDate"/>
+          <Label Grid.Row="9" Grid.Column="0"  Content="Pm10CalcDate"/>
+          <Label Grid.Row="10" Grid.Column="0"  Content="Pm10IndexLevel"/>
+          <Label Grid.Row="11" Grid.Column="0"  Content="Pm10SourceDataDate"/>
+          <Label Grid.Row="12" Grid.Column="0"  Content="Pm25CalcDate"/>
+          <Label Grid.Row="13" Grid.Column="0"  Content="Pm25IndexLevel"/>
+          <Label Grid.Row="14" Grid.Column="0"  Content="Pm25SourceDataDate"/>
+          <Label Grid.Row="15" Grid.Column="0"  Content="O3CalcDate"/>
+          <Label Grid.Row="16" Grid.Column="0"  Content="O3IndexLevel"/>
+          <Label Grid.Row="17" Grid.Column="0"  Content="O3SourceDataDate"/>
+          <Label Grid.Row="18" Grid.Column="0"  Content="StIndexStatus"/>
+          <Label Grid.Row="19" Grid.Column="0"  Content="StIndexCrParam"/>
+          
+          <Label Grid.Row="0" Grid.Column="1"  Content="{Binding Station.StCalcDate}"/>
+          <Label Grid.Row="1" Grid.Column="1"  Content="{Binding Station.StIndexLevel}"/>
+          <Label Grid.Row="2" Grid.Column="1"  Content="{Binding Station.StSourceDataDate}"/>
+          <Label Grid.Row="3" Grid.Column="1"  Content="{Binding Station.So2CalcDate}"/>
+          <Label Grid.Row="4" Grid.Column="1"  Content="{Binding Station.So2IndexLevel}"/>
+          <Label Grid.Row="5" Grid.Column="1"  Content="{Binding Station.So2SourceDataDate}"/>
+          <Label Grid.Row="6" Grid.Column="1"  Content="{Binding Station.No2CalcDate}"/>
+          <Label Grid.Row="7" Grid.Column="1"  Content="{Binding Station.No2IndexLevel}"/>
+          <Label Grid.Row="8" Grid.Column="1"  Content="{Binding Station.No2SourceDataDate}"/>
+          <Label Grid.Row="9" Grid.Column="1"  Content="{Binding Station.Pm10CalcDate}"/>
+          <Label Grid.Row="10" Grid.Column="2"  Content="{Binding Station.Pm10IndexLevel}"/>
+          <Label Grid.Row="11" Grid.Column="2"  Content="{Binding Station.Pm10SourceDataDate}"/>
+          <Label Grid.Row="12" Grid.Column="2"  Content="{Binding Station.Pm25CalcDate}"/>
+          <Label Grid.Row="13" Grid.Column="2"  Content="{Binding Station.Pm25IndexLevel}"/>
+          <Label Grid.Row="14" Grid.Column="2"  Content="{Binding Station.Pm25SourceDataDate}"/>
+          <Label Grid.Row="15" Grid.Column="2"  Content="{Binding Station.O3CalcDate}"/>
+          <Label Grid.Row="16" Grid.Column="2"  Content="{Binding Station.O3IndexLevel}"/>
+          <Label Grid.Row="17" Grid.Column="2"  Content="{Binding Station.O3SourceDataDate}"/>
+          <Label Grid.Row="18" Grid.Column="2"  Content="{Binding Station.StIndexStatus}"/>
+          <Label Grid.Row="19" Grid.Column="2"  Content="{Binding Station.StIndexCrParam}"/>
+      </Grid>
+      </StackPanel>
     </Grid>
 </Window>
