@@ -1,4 +1,5 @@
 ﻿using MeasuringStations.Models;
+using MeasuringStations.Services;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Newtonsoft.Json;
@@ -16,6 +17,8 @@ namespace MeasuringStations
 {
     public partial class MainViewModel : ObservableObject
     {
+        private readonly IStationService _service;
+
         [ObservableProperty]
         [AlsoNotifyChangeFor(nameof(IsNotBusy))]
         private bool _isBusy;
@@ -26,9 +29,10 @@ namespace MeasuringStations
         public ObservableCollection<Station> AllStations { get; }
         public bool IsNotBusy => !IsBusy;
 
-        public MainViewModel()
+        public MainViewModel(IStationService service)
         {
             AllStations = new();
+            _service = service;
         }
 
         [ICommand]
@@ -48,17 +52,9 @@ namespace MeasuringStations
                 {
                     MessageBox.Show("Couldn't find given station.");
                     return;
-                }    
-
-                using var client = new HttpClient();
-                var response = await client.GetAsync("https://api.gios.gov.pl/pjp-api/rest/aqindex/getIndex/" + selectedStation.Id);
-                if (response.StatusCode != HttpStatusCode.OK)
-                {
-                    MessageBox.Show("Operation failed.");
                 }
 
-                var json = await response.Content.ReadAsStringAsync();
-                Station = JsonConvert.DeserializeObject<StationDetails>(json);
+                Station = await _service.GetDetailsAsync(selectedStation.Id);
             }
             catch (Exception)
             {
@@ -83,17 +79,7 @@ namespace MeasuringStations
                 IsBusy = true;
                 AllStations.Clear();
 
-                using var client = new HttpClient();
-                var response = await client.GetAsync("https://api.gios.gov.pl/pjp-api/rest/station/findAll");
-
-                if (response.StatusCode != HttpStatusCode.OK)
-                {
-                    MessageBox.Show("Couldn't load stations.");
-                    return;
-                }
-
-                var json = await response.Content.ReadAsStringAsync();
-                var stations = JsonConvert.DeserializeObject<IEnumerable<Station>>(json);
+                var stations = await _service.GetAllAsync();
 
                 foreach (var station in stations)
                 {

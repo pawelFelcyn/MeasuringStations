@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autofac;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,7 @@ namespace MeasuringStations
     {
         public MainWindow()
         {
-            var viewModel = new MainViewModel();
+            var viewModel = Bootstrapper.Container.Resolve<MainViewModel>();
             DataContext = viewModel;
 
             InitializeComponent();
