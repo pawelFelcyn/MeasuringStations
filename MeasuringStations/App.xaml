@@ -42,7 +42,10 @@
               </Border>
             </ControlTemplate>
           </Setter.Value>
-      </Setter>
+        </Setter>
+      </Style>
+      <Style TargetType="Grid">
+        <Setter Property="Background" Value="#111111"/>
       </Style>
     </Application.Resources>
 </Application>
