@@ -1,4 +1,5 @@
-﻿using MeasuringStations.Models;
+﻿using MeasuringStations.Exceptions;
+using MeasuringStations.Models;
 using MeasuringStations.Services;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
@@ -18,6 +19,8 @@ namespace MeasuringStations
     public partial class MainViewModel : ObservableObject
     {
         private readonly IStationService _service;
+        private readonly IPathProvider _pathProvider;
+        private readonly IStationFileSaverFactory _stationFileSaverFactory;
 
         [ObservableProperty]
         [AlsoNotifyChangeFor(nameof(IsNotBusy))]
@@ -29,10 +32,13 @@ namespace MeasuringStations
         public ObservableCollection<Station> AllStations { get; }
         public bool IsNotBusy => !IsBusy;
 
-        public MainViewModel(IStationService service)
+        public MainViewModel(IStationService service, IPathProvider pathProvider, 
+            IStationFileSaverFactory stationFileSaverFactory)
         {
             AllStations = new();
             _service = service;
+            _pathProvider = pathProvider;
+            _stationFileSaverFactory = stationFileSaverFactory;
         }
 
         [ICommand]
@@ -94,6 +100,59 @@ namespace MeasuringStations
             {
                 IsBusy = false;
             }
+        }
+        [ICommand]
+        private async Task SaveToFileAsync()
+        {
+            if (IsBusy)
+            {
+                return;
+            }
+
+            try
+            {
+                IsBusy = true;
+
+                if (Station is null)
+                {
+                    MessageBox.Show("Station to save has not been loaded.");
+                    return;
+                }
+
+                if (!_pathProvider.TryGetPath(out var path))
+                {
+                    return;
+                }
+
+                var extension = ExtensionOf(path);
+                var saver = _stationFileSaverFactory.Create(extension);
+                await saver.SaveAsync(Station, path);
+                MessageBox.Show("Operation succeed.");
+            }
+            catch (NotSupportedExtensionException)
+            {
+                MessageBox.Show("This extension is not supported.");
+            }
+            catch
+            {
+                MessageBox.Show("Operation failed");
+            }
+            finally
+            {
+                IsBusy = false;
+            }
+        }
+
+        private string ExtensionOf(string path)
+        {
+            var lastDot = path.LastIndexOf('.');
+
+            if (lastDot == -1)
+            {
+                throw new ArgumentException(nameof(path));
+            }
+
+            return path.Substring(lastDot + 1, path.Length - lastDot - 1);
         }
     }
 }

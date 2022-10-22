@@ -21,6 +21,8 @@ namespace MeasuringStations
         {
             var builder = new ContainerBuilder();
             builder.RegisterType<StationService>().As<IStationService>();
+            builder.RegisterType<StationFileSaverFactory>().As<IStationFileSaverFactory>();
+            builder.RegisterType<FIleDIalogPathProvider>().As<IPathProvider>();
             builder.RegisterType<MainViewModel>().AsSelf();
             Container = builder.Build();
         }

@@ -30,6 +30,7 @@
         <WrapPanel>
           <TextBox Margin="10" Text="{Binding SelectedStationName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
           <Button Margin="10" Content="Details" Width="50" Command="{Binding GetStationCommand}"/>
+          <Button Margin="10" Content="Save to file" Width="70" Command="{Binding SaveToFileCommand}"/>
         </WrapPanel>
         <Grid>
           <Grid.ColumnDefinitions>
