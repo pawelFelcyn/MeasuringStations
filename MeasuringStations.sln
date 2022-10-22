@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31613.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeasuringStations", "MeasuringStations\MeasuringStations.csproj", "{0DCF2C23-BC2C-48C8-9047-FC53449B6A95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MeasuringStations", "MeasuringStations\MeasuringStations.csproj", "{0DCF2C23-BC2C-48C8-9047-FC53449B6A95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeasuringStations.Tests", "MeasuringStations.Tests\MeasuringStations.Tests.csproj", "{D9D027BC-C26C-4B09-AA0D-B9985210275A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{0DCF2C23-BC2C-48C8-9047-FC53449B6A95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DCF2C23-BC2C-48C8-9047-FC53449B6A95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0DCF2C23-BC2C-48C8-9047-FC53449B6A95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9D027BC-C26C-4B09-AA0D-B9985210275A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9D027BC-C26C-4B09-AA0D-B9985210275A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9D027BC-C26C-4B09-AA0D-B9985210275A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9D027BC-C26C-4B09-AA0D-B9985210275A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
