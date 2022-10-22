@@ -21,6 +21,7 @@ namespace MeasuringStations
         private readonly IStationService _service;
         private readonly IPathProvider _pathProvider;
         private readonly IStationFileSaverFactory _stationFileSaverFactory;
+        private readonly INotifier _notifier;
 
         [ObservableProperty]
         [AlsoNotifyChangeFor(nameof(IsNotBusy))]
@@ -33,12 +34,13 @@ namespace MeasuringStations
         public bool IsNotBusy => !IsBusy;
 
         public MainViewModel(IStationService service, IPathProvider pathProvider, 
-            IStationFileSaverFactory stationFileSaverFactory)
+            IStationFileSaverFactory stationFileSaverFactory, INotifier notifier)
         {
             AllStations = new();
             _service = service;
             _pathProvider = pathProvider;
             _stationFileSaverFactory = stationFileSaverFactory;
+            _notifier = notifier;
         }
 
         [ICommand]
@@ -56,20 +58,25 @@ namespace MeasuringStations
                 var selectedStation = AllStations.FirstOrDefault(s => s.StationName == SelectedStationName?.Trim());
                 if (selectedStation is null)
                 {
-                    MessageBox.Show("Couldn't find given station.");
+                    _notifier.Notify("Couldn't find given station.");
                     return;
                 }
 
                 Station = await _service.GetDetailsAsync(selectedStation.Id);
             }
-            catch (Exception)
+            catch
             {
-                MessageBox.Show("Operation failed.");
+                NotifyFailure();
             }
             finally
             {
                 IsBusy = false;
             }
+        }
+
+        private void NotifyFailure()
+        {
+            _notifier.Notify("Operaton failed.");
         }
 
         [ICommand]
@@ -94,7 +101,7 @@ namespace MeasuringStations
             }
             catch
             {
-                MessageBox.Show("Couldn't load stations.");
+                _notifier.Notify("Couldn't load stations.");
             }
             finally
             {
@@ -115,7 +122,7 @@ namespace MeasuringStations
 
                 if (Station is null)
                 {
-                    MessageBox.Show("Station to save has not been loaded.");
+                    _notifier.Notify("Station to save has not been loaded.");
                     return;
                 }
 
@@ -127,20 +134,25 @@ namespace MeasuringStations
                 var extension = ExtensionOf(path);
                 var saver = _stationFileSaverFactory.Create(extension);
                 await saver.SaveAsync(Station, path);
-                MessageBox.Show("Operation succeed.");
+                NotifySuccess();
             }
             catch (NotSupportedExtensionException)
             {
-                MessageBox.Show("This extension is not supported.");
+                _notifier.Notify("This extension is not supported.");
             }
-            catch(Exception ex)
+            catch(Exception)
             {
-                MessageBox.Show("Operation failed");
+                NotifyFailure();
             }
             finally
             {
                 IsBusy = false;
             }
+        }
+
+        private void NotifySuccess()
+        {
+            _notifier.Notify("Operation succeed.");
         }
 
         private string ExtensionOf(string path)
