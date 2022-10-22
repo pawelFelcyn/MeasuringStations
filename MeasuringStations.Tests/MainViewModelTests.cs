@@ -60,15 +60,66 @@ namespace MeasuringStations.Tests
         [Fact]
         public void SaveToFileCommand_ForNotSupportedExtension_NotifiesUser()
         {
-            var pathProviderMock = new Mock<IPathProvider>();
-            string path = "path.txt";
-            pathProviderMock.Setup(m => m.TryGetPath(out path)).Returns(true);
-            var facgtoryMock = new Mock<IStationFileSaverFactory>();
-            facgtoryMock.Setup(m => m.Create(It.IsAny<string>())).Throws(new NotSupportedExtensionException());
-            var vm = new MainViewModel(null, pathProviderMock.Object, facgtoryMock.Object, _notifier);
+            var pathProvider = GetPathProvider();
+            var factoryMock = new Mock<IStationFileSaverFactory>();
+            factoryMock.Setup(m => m.Create(It.IsAny<string>())).Throws(new NotSupportedExtensionException());
+            var vm = new MainViewModel(null, pathProvider, factoryMock.Object, _notifier);
             vm.Station = new();
             vm.SaveToFileCommand.Execute(null);
             _notifier.LastMessage.Should().Be("This extension is not supported.");
+        }
+
+        private IPathProvider GetPathProvider()
+        {
+            var pathProviderMock = new Mock<IPathProvider>();
+            string path = "path.txt";
+            pathProviderMock.Setup(m => m.TryGetPath(out path)).Returns(true);
+            return pathProviderMock.Object;
+        }
+
+        [Fact]
+        public void SaveToFileCommand_ForSupportedExtension_SavesStationToFile()
+        {
+            var pathProvider = GetPathProvider();
+            var factoryMock = new Mock<IStationFileSaverFactory>();
+            var saver = new TestStationSaver();
+            factoryMock.Setup(m => m.Create(It.IsAny<string>())).Returns(saver);
+            var vm = new MainViewModel(null, pathProvider, factoryMock.Object, _notifier);
+            vm.Station = new();
+            vm.SaveToFileCommand.Execute(null);
+            saver.HasBeenSaved.Should().BeTrue();
+        }
+
+        [Fact]
+        public void GetStationCommand_ForNotFoundStation_NotifiesUser()
+        {
+            var vm = new MainViewModel(null, null, null, _notifier);
+            vm.SelectedStationName = "test";
+            vm.GetStationCommand.Execute(null);
+            _notifier.LastMessage.Should().Be("Couldn't find given station.");
+        }
+
+        [Fact]
+        public void GetStationCommand_WhenExceptionIsThrown_NotifiesUser()
+        {
+            var serviceMock = new Mock<IStationService>();
+            serviceMock.Setup(m => m.GetDetailsAsync(It.IsAny<int>())).ThrowsAsync(new Exception());
+            var vm = new MainViewModel(serviceMock.Object, null, null, _notifier);
+            vm.SelectedStationName = "test";
+            vm.AllStations.Add(new() { StationName = "test"});
+            vm.GetStationCommand.Execute(null);
+            _notifier.LastMessage.Should().Be("Operaton failed.");
+        }
+
+        private class TestStationSaver : IStationFileSaver
+        {
+            public bool HasBeenSaved { get; private set; } = false;
+
+            public Task SaveAsync(StationDetails station, string path)
+            {
+                HasBeenSaved = true;
+                return Task.CompletedTask;
+            }
         }
 
         private class TestNotifier : INotifier
