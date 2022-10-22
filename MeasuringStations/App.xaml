@@ -4,6 +4,45 @@
              xmlns:local="clr-namespace:MeasuringStations"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+      <Style TargetType="Button">
+        <Style.Triggers>
+          <Trigger Property="IsMouseOver" Value="True">
+            <Setter Property="Foreground" Value="#ffffff"/>
+          </Trigger>
+          <Trigger Property="IsMouseOver" Value="True">
+            <Setter Property="Foreground" Value="#cccccc"/>
+          </Trigger>
+        </Style.Triggers>
+        <Setter Property="Foreground" Value="#cccccc"/>
+        <Setter Property="Template">
+          <Setter.Value>
+            <ControlTemplate TargetType="Button">
+              <Border CornerRadius="10" 
+                      BorderThickness="2">
+                <Border.Style>
+                  <Style TargetType="Border">
+                    <Style.Triggers>
+                      <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#9932cc"/>
+                        <Setter Property="BorderBrush" Value="#800080"/>
+                      </Trigger>
+                      <Trigger Property="IsMouseOver" Value="False">
+                        <Setter Property="Background" Value="#800080"/>
+                        <Setter Property="BorderBrush" Value="#4b0082"/>
+                      </Trigger>
+                  </Style.Triggers>
+                  </Style>
+                </Border.Style>
+                <ContentPresenter x:Name="contentPresenter" 
+                                  ContentTemplate="{TemplateBinding ContentTemplate}" 
+                                  Content="{TemplateBinding Content}" 
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  Margin="{TemplateBinding Padding}" 
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+              </Border>
+            </ControlTemplate>
+          </Setter.Value>
+      </Setter>
+      </Style>
     </Application.Resources>
 </Application>
