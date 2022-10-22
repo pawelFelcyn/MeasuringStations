@@ -133,7 +133,7 @@ namespace MeasuringStations
             {
                 MessageBox.Show("This extension is not supported.");
             }
-            catch
+            catch(Exception ex)
             {
                 MessageBox.Show("Operation failed");
             }

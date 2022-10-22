@@ -17,6 +17,8 @@ namespace MeasuringStations.Services
                     return new JsonStationSaver();
                 case "xml":
                     return new XmlStationSaver();
+                case "pdf":
+                    return new PdfStationSaver();
                 default:
                     throw new NotSupportedExtensionException();
             }

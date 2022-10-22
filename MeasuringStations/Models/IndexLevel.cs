@@ -4,5 +4,10 @@
     {
         public int Id { get; set; }
         public string IndexLevelName { get; set; }
+
+        public override string ToString()
+        {
+            return IndexLevelName;
+        }
     }
 }
