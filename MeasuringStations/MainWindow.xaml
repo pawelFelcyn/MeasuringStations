@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MeasuringStations"
         mc:Ignorable="d"
-        Title="MainWindow" Height="auto" Width="800"
+        Title="MainWindow" Height="auto" Width="400"
         SizeToContent="Height">
     <Grid IsEnabled="{Binding IsNotBusy}">
       <Grid.RowDefinitions>
@@ -14,7 +14,7 @@
       </Grid.RowDefinitions>
       <StackPanel>
         <Button Content="Reload stations" Command="{Binding GetAllStationsCommand}" Width="100" Margin="10"/>
-        <ScrollViewer Height="300" MaxHeight="300" MinHeight="300">
+        <ScrollViewer Height="200">
           <ListView ItemsSource="{Binding AllStations, Mode=OneTime}" SelectedItem="{Binding SelectedStation, Mode=OneWayToSource}">
             <ListView.ItemTemplate>
               <DataTemplate>
@@ -32,6 +32,7 @@
           <Button Margin="10" Content="Details" Width="50" Command="{Binding GetStationCommand}"/>
           <Button Margin="10" Content="Save to file" Width="70" Command="{Binding SaveToFileCommand}"/>
         </WrapPanel>
+        <ScrollViewer Height="200">
         <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -79,7 +80,7 @@
           <Label Grid.Row="17" Grid.Column="0"  Content="O3SourceDataDate"/>
           <Label Grid.Row="18" Grid.Column="0"  Content="StIndexStatus"/>
           <Label Grid.Row="19" Grid.Column="0"  Content="StIndexCrParam"/>
-          
+
           <Label Grid.Row="0" Grid.Column="1"  Content="{Binding Station.StCalcDate}"/>
           <Label Grid.Row="1" Grid.Column="1"  Content="{Binding Station.StIndexLevel}"/>
           <Label Grid.Row="2" Grid.Column="1"  Content="{Binding Station.StSourceDataDate}"/>
@@ -100,7 +101,8 @@
           <Label Grid.Row="17" Grid.Column="2"  Content="{Binding Station.O3SourceDataDate}"/>
           <Label Grid.Row="18" Grid.Column="2"  Content="{Binding Station.StIndexStatus}"/>
           <Label Grid.Row="19" Grid.Column="2"  Content="{Binding Station.StIndexCrParam}"/>
-      </Grid>
+        </Grid>
+      </ScrollViewer>
       </StackPanel>
     </Grid>
 </Window>
