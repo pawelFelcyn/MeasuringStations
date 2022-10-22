@@ -90,10 +90,10 @@ namespace MeasuringStations
             try
             {
                 IsBusy = true;
-                AllStations.Clear();
 
                 var stations = await _service.GetAllAsync();
 
+                AllStations.Clear();
                 foreach (var station in stations)
                 {
                     AllStations.Add(station);
