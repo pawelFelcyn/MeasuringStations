@@ -47,5 +47,11 @@
       <Style TargetType="Grid">
         <Setter Property="Background" Value="#111111"/>
       </Style>
+      <Style TargetType="ScrollViewer">
+        <Setter Property="Background" Value="#111111"/>
+      </Style>
+      <Style TargetType="Label">
+        <Setter Property="Foreground" Value="White"/>
+      </Style>
     </Application.Resources>
 </Application>
