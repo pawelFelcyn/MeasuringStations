@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:MeasuringStations"
         mc:Ignorable="d"
         Title="MainWindow" Height="auto" Width="400"
-        SizeToContent="Height">
+        SizeToContent="Height"
+        ResizeMode="NoResize">
     <Grid IsEnabled="{Binding IsNotBusy}">
       <Grid.RowDefinitions>
         <RowDefinition/>
