@@ -53,5 +53,8 @@
       <Style TargetType="Label">
         <Setter Property="Foreground" Value="White"/>
       </Style>
+      <Style TargetType="TextBox">
+        <Setter Property="Foreground" Value="White"/>
+      </Style>
     </Application.Resources>
 </Application>
